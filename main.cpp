@@ -115,7 +115,11 @@ good to go!
 struct FloatType
 {
     float* value = new float;
-    FloatType() : value(nullptr) {}
+    // FloatType( float val) : value( &val ) {}
+    FloatType( float val )
+    {
+        value = &val;
+    }
     float add( float lhs, float rhs );
     float subtract( float lhs, float rhs );
     float multiply( float lhs, float rhs );
@@ -147,7 +151,10 @@ float FloatType::divide( float lhs, float rhs )
 struct DoubleType
 {
     double* value = new double;
-    DoubleType() : value(nullptr) {}
+    DoubleType(double val) 
+    {
+        value = &val;
+    }
     double add( double lhs, double rhs );
     double subtract( double lhs, double rhs );
     double multiply( double lhs, double rhs );
@@ -179,7 +186,10 @@ double DoubleType::divide( double lhs, double rhs )
 struct IntType
 {
     int* value = new int;
-    IntType() : value(nullptr) {}
+    IntType(int val)
+    {
+        value = &val;
+    }
     int add( int lhs, int rhs );
     int subtract( int lhs, int rhs );
     int multiply( int lhs, int rhs );
@@ -218,9 +228,9 @@ int main()
     HeapA heapA; 
 
     //assign heap primitives
-    // FloatType ft ( 2.0f );  
-    // DoubleType dt ( 2 );
-    // IntType it ( 2 ) ;
+    FloatType ft ( 2.0f );  
+    DoubleType dt ( 2 );
+    IntType it ( 2 ) ;
 
     // std::cout << "FloatType add result=" << ft.add( 2.0f ).value << std::endl;
     // std::cout << "FloatType subtract result=" << ft.subtract( 2.0f ).value << std::endl;
