@@ -121,10 +121,6 @@ struct FloatType
     {
          value = &val;   
     }
-    // ~FloatType()
-    // {
-    //     delete value;
-    // }
     FloatType& add( float mod );
     FloatType& subtract( float mod );
     FloatType& multiply( float mod );
@@ -166,7 +162,7 @@ FloatType& FloatType::multiply( float mod )
 FloatType& FloatType::divide( float mod )
 {
     if ( mod == 0.f )
-        std::cout << "\nwarning, floating point division by zero!" << std::endl;
+        std::cout << "warning: floating point division by zero!" << std::endl;
     if ( value != nullptr )
     {
         placeHolder = *value / mod;
@@ -222,7 +218,7 @@ DoubleType& DoubleType::multiply( double mod )
 DoubleType& DoubleType::divide( double mod )
 {
     if ( mod == 0. )
-        std::cout << "\nwarning, floating point division by zero!" << std::endl;
+        std::cout << "warning: floating point division by zero!" << std::endl;
     if ( value != nullptr )
     {
         placeHolder = *value / mod;
@@ -279,7 +275,7 @@ IntType& IntType::divide( int mod )
 {
     if ( mod == 0 )
     {
-        std::cout << "error, integer division by zero will crash the program!" << std::endl;
+        std::cout << "error: integer division by zero is an error and will crash the program!" << std::endl;
         return *this;
     }
     if ( value != nullptr )
@@ -342,6 +338,7 @@ int main()
     std::cout << "---------------------\n" << std::endl; 
 
     std::cout << "good to go!\n";
+
     return 0;
 }
 
