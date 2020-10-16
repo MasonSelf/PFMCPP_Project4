@@ -120,16 +120,24 @@ struct FloatType
     {
         value = &val;
     }
-    float add( float lhs, float rhs );
+    //float& add( float mod );
+    FloatType& add( float mod );
     float subtract( float lhs, float rhs );
     float multiply( float lhs, float rhs );
     float divide( float lhs, float rhs );
+    // float* crap = new float
+    // {
+
+    // };
 };
 
-float  FloatType::add( float lhs, float rhs )
+FloatType& FloatType::add ( float mod )
 {
-    return lhs + rhs;
+    float placeHolder = *value + mod; 
+    value = &placeHolder;
+    return *this;
 }
+
 
 float FloatType::subtract( float lhs, float rhs )
 {
@@ -232,7 +240,7 @@ int main()
     DoubleType dt ( 2 );
     IntType it ( 2 ) ;
 
-    // std::cout << "FloatType add result=" << ft.add( 2.0f ).value << std::endl;
+    std::cout << "FloatType add result=" << *ft.add( 2.0f ).value << std::endl;
     // std::cout << "FloatType subtract result=" << ft.subtract( 2.0f ).value << std::endl;
     // std::cout << "FloatType multiply result=" << ft.multiply( 2.0f ).value << std::endl;
     // std::cout << "FloatType divide result=" << ft.divide( 16.0f).value << std::endl << std::endl;
