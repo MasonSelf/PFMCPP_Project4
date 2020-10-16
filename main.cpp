@@ -129,6 +129,8 @@ struct FloatType
     FloatType& subtract( float mod );
     FloatType& multiply( float mod );
     FloatType& divide( float mod );
+
+    FloatType add( const FloatType& ft );
 };
 
 
@@ -173,6 +175,11 @@ FloatType& FloatType::divide( float mod )
         value = &placeHolder;
     }
     return *this;
+}
+
+FloatType FloatType::add(  const FloatType& ft )
+{
+    
 }
 
 struct DoubleType
