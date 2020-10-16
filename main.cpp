@@ -118,35 +118,49 @@ struct FloatType
     // FloatType( float val) : value( &val ) {}
     FloatType( float val )
     {
-        value = &val;
+         value = &val;
+         
     }
-    //float& add( float mod );
-    FloatType& add( float mod );
-    float subtract( float lhs, float rhs );
-    float multiply( float lhs, float rhs );
-    float divide( float lhs, float rhs );
-    // float* crap = new float
+    // ~FloatType()
     // {
-
-    // };
+    //     delete value;
+    // }
+    FloatType& add( float mod );
+    FloatType& subtract( float mod );
+    FloatType& multiply( float mod );
+    float divide( float lhs, float rhs );
 };
+
 
 FloatType& FloatType::add ( float mod )
 {
-    float placeHolder = *value + mod; 
-    value = &placeHolder;
+    if (value != nullptr)
+    {
+        float placeHolder = *value + mod;
+        value = &placeHolder;
+    }
     return *this;
 }
 
 
-float FloatType::subtract( float lhs, float rhs )
+FloatType& FloatType::subtract( float mod )
 {
-    return lhs - rhs;
+    if (value != nullptr)
+    {
+        float placeHolder = *value - mod;
+        value = &placeHolder;
+    }
+    return *this;
 }
 
-float FloatType::multiply( float lhs, float rhs )
+FloatType& FloatType::multiply( float mod )
 {
-    return lhs * rhs;
+    if (value != nullptr )
+    {
+        float placeHolder = *value * mod;
+        value = &placeHolder;
+    }
+    return *this;
 }
 
 float FloatType::divide( float lhs, float rhs )
@@ -239,10 +253,10 @@ int main()
     FloatType ft ( 2.0f );  
     DoubleType dt ( 2 );
     IntType it ( 2 ) ;
-
+    
     std::cout << "FloatType add result=" << *ft.add( 2.0f ).value << std::endl;
-    // std::cout << "FloatType subtract result=" << ft.subtract( 2.0f ).value << std::endl;
-    // std::cout << "FloatType multiply result=" << ft.multiply( 2.0f ).value << std::endl;
+    std::cout << "FloatType subtract result=" << *ft.subtract( 2.0f ).value << std::endl;
+    std::cout << "FloatType multiply result=" << *ft.multiply( 2.0f ).value << std::endl;
     // std::cout << "FloatType divide result=" << ft.divide( 16.0f).value << std::endl << std::endl;
 
     // std::cout << "DoubleType add result=" << dt.add(2.0).value << std::endl;
@@ -282,7 +296,6 @@ int main()
     // std::cout << "---------------------\n" << std::endl; 
 
     // std::cout << "good to go!\n";
-
     return 0;
 }
 
@@ -301,45 +314,3 @@ int main()
 
  Wait for my code review. 
  */
-
-
-
-// int main() 
-// {
-//     FloatType ft;
-//     std::cout << "result of ft.add(): " << ft.add( 123.456f, 432.1f) << std::endl;
-//     std::cout << "result of ft.subtract(): " << ft.subtract( 123.456f, 432.1f) << std::endl;
-//     std::cout << "result of ft.multiply(): " << ft.multiply( 123.456f, 432.1f) << std::endl;
-//     std::cout << "result of ft.divide(): " << ft.divide( 123.456f, 432.1f) << std::endl;
-
-//     std::cout << "result of ft.add(): " << ft.add( 4444.56f, 0.0f)  << std::endl;
-//     std::cout << "result of ft.subtract(): " << ft.subtract( 4444.56f, 0.0f) << std::endl;
-//     std::cout << "result of ft.multiply(): " << ft.multiply( 4444.56f, 0.0f) << std::endl;
-//     std::cout << "result of ft.divide(): " << ft.divide( 4444.56f, 0.0f) << std::endl;
-
-//     DoubleType db;
-//     std::cout << "result of db.add(): " << db.add( 123.456, 432.1) << std::endl;
-//     std::cout << "result of db.subtract(): " << db.subtract( 123.456, 432.1) << std::endl;
-//     std::cout << "result of db.multiply(): " << db.multiply( 123.456, 432.1) << std::endl;
-//     std::cout << "result of db.divide(): " << db.divide( 123.456, 432.1) << std::endl;
-
-//     std::cout << "result of db.add(): " << db.add( 123.456, 0.0) << std::endl;
-//     std::cout << "result of db.subtract(): " << db.subtract( 123.456, 0.0) << std::endl;
-//     std::cout << "result of db.multiply(): " << db.multiply( 123.456, 0.0) << std::endl;
-//     std::cout << "result of db.divide(): " << db.divide( 123.456, 0.0) << std::endl;
-
-//     IntType i;
-//     std::cout << "result of i.add(): " << i.add( 10, 20) << std::endl;
-//     std::cout << "result of i.subtract(): " << i.subtract( 10, 20) << std::endl;
-//     std::cout << "result of i.multiply(): " << i.multiply( 10, 20) << std::endl;
-//     std::cout << "result of i.divide(): " << i.divide( 10, 20) << std::endl;
-
-//     std::cout << "result of i.add(): " << i.add( 10, 0) << std::endl;
-//     std::cout << "result of i.subtract(): " << i.subtract( 10, 0) << std::endl;
-//     std::cout << "result of i.multiply(): " << i.multiply( 10, 0) << std::endl;
-//     std::cout << "result of i.divide(): " << i.divide( 10, 0) << std::endl;
-
-//     std::cout << "good to go!" << std::endl;
-// }
-
-
