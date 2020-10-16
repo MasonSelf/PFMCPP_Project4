@@ -119,7 +119,11 @@ struct FloatType
     // FloatType( float val) : value( &val ) {}
     FloatType( float val )
     {
-         value = &val;   
+        value = &val;   
+    }
+    ~FloatType()
+    {
+        delete value;
     }
     FloatType& add( float mod );
     FloatType& subtract( float mod );
@@ -179,6 +183,10 @@ struct DoubleType
     {
         value = &val;
     }
+    ~DoubleType()
+    {
+        delete value;
+    }
     DoubleType& add( double mod );
     DoubleType& subtract( double mod );
     DoubleType& multiply( double mod );
@@ -234,6 +242,10 @@ struct IntType
     IntType(int val)
     {
         value = &val;
+    }
+    ~IntType()
+    {
+        delete value;
     }
     IntType& add( int mod );
     IntType& subtract( int mod );
