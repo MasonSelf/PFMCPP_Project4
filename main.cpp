@@ -126,7 +126,10 @@ struct FloatType
     FloatType& multiply( float mod );
     FloatType& divide( float mod );
 
-    //FloatType add( const FloatType& ft );
+    FloatType& add( const FloatType& ft );
+    FloatType& subtract( const FloatType& ft );
+    FloatType& multiply( const FloatType& ft );
+    FloatType& divide( const FloatType& ft );
 };
 
 
@@ -162,10 +165,27 @@ FloatType& FloatType::divide( float mod )
     return *this;
 }
 
-// FloatType FloatType::add(  const FloatType& ft )
-// {
-    
-// }
+FloatType& FloatType::add( const FloatType& ft )
+{
+    return add(*ft.value);
+}
+
+FloatType& FloatType::subtract( const FloatType& ft )
+{
+    return subtract(*ft.value);
+}
+
+FloatType& FloatType::multiply( const FloatType& ft )
+{
+    return multiply(*ft.value);
+}
+
+FloatType& FloatType::divide( const FloatType& ft )
+{
+    return divide(*ft.value);
+}
+
+
 
 struct DoubleType
 {
@@ -179,6 +199,11 @@ struct DoubleType
     DoubleType& subtract( double mod );
     DoubleType& multiply( double mod );
     DoubleType& divide( double mod );
+
+    DoubleType& add( const FloatType& ft );
+    DoubleType& subtract( const FloatType& ft );
+    DoubleType& multiply( const FloatType& ft );
+    DoubleType& divide( const FloatType& ft );
 };
 
 DoubleType& DoubleType::add( double mod )
@@ -202,13 +227,33 @@ DoubleType& DoubleType::multiply( double mod )
     return *this;
 }
 
-DoubleType& DoubleType::divide( double mod )
+DoubleType& DoubleType::divide( double mod ) 
 {
     if ( mod == 0. )
         std::cout << "warning: floating point division by zero!" << std::endl;
     if ( value != nullptr )
         *value /= mod;
     return *this;
+}
+
+DoubleType& DoubleType::add( const FloatType& ft )
+{
+    return add(*ft.value);
+}
+
+DoubleType& DoubleType::subtract( const FloatType& ft )
+{
+    return subtract(*ft.value);
+}
+
+DoubleType& DoubleType::multiply( const FloatType& ft )
+{
+    return multiply(*ft.value);
+}
+
+DoubleType& DoubleType::divide( const FloatType& ft )
+{
+    return divide(*ft.value);
 }
 
 struct IntType
@@ -223,6 +268,11 @@ struct IntType
     IntType& subtract( int mod );
     IntType& multiply( int mod );
     IntType& divide( int mod );
+
+    IntType& add( const DoubleType& dt);
+    IntType& subtract( const DoubleType& dt );
+    IntType& multiply( const DoubleType& dt );
+    IntType& divide( const DoubleType& dt);
 };
 
 IntType& IntType::add( int mod )
@@ -257,6 +307,27 @@ IntType& IntType::divide( int mod )
         *value /= mod;
     return *this;
 }
+
+IntType& IntType::add( const DoubleType& dt )
+{
+    return add(*dt.value);
+}
+
+IntType& IntType::subtract( const DoubleType& dt )
+{
+    return subtract(*dt.value);
+}
+
+IntType& IntType::multiply( const DoubleType& dt )
+{
+    return multiply(*dt.value);
+}
+
+IntType& IntType::divide( const DoubleType& dt ) 
+{
+    return divide(*dt.value);
+}
+
 
 int main()
 {   
