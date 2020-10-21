@@ -112,6 +112,9 @@ good to go!
 
 #include <iostream>
 
+struct DoubleType;
+struct IntType;
+
 struct FloatType
 {
     float* value = nullptr;
@@ -130,8 +133,55 @@ struct FloatType
     FloatType& subtract( const FloatType& ft );
     FloatType& multiply( const FloatType& ft );
     FloatType& divide( const FloatType& ft );
+
+    FloatType& add( const DoubleType& dt );
+    FloatType& subtract( const DoubleType& dt );
+    FloatType& multiply( const DoubleType& dt );
+    FloatType& divide( const DoubleType& dt );
+
+    FloatType& add( const IntType& it );
+    FloatType& subtract( const IntType& it );
+    FloatType& multiply( const IntType& it );
+    FloatType& divide( const IntType& it );
 };
 
+struct DoubleType
+{
+    double* value = nullptr; 
+    DoubleType( double val ) : value(new double( val )){}
+    ~DoubleType()
+    {
+        delete value;
+    }
+    DoubleType& add( double mod );
+    DoubleType& subtract( double mod );
+    DoubleType& multiply( double mod );
+    DoubleType& divide( double mod );
+
+    DoubleType& add( const FloatType& ft );
+    DoubleType& subtract( const FloatType& ft );
+    DoubleType& multiply( const FloatType& ft );
+    DoubleType& divide( const FloatType& ft );
+};
+
+struct IntType
+{
+    int* value = nullptr; 
+    IntType(int val) : value(new int( val )){}
+    ~IntType()
+    {
+        delete value;
+    }
+    IntType& add( int mod );
+    IntType& subtract( int mod );
+    IntType& multiply( int mod );
+    IntType& divide( int mod );
+
+    IntType& add( const DoubleType& dt);
+    IntType& subtract( const DoubleType& dt );
+    IntType& multiply( const DoubleType& dt );
+    IntType& divide( const DoubleType& dt);
+};
 
 FloatType& FloatType::add ( float mod )
 {
@@ -185,26 +235,47 @@ FloatType& FloatType::divide( const FloatType& ft )
     return divide(*ft.value);
 }
 
-
-
-struct DoubleType
+FloatType& FloatType::add( const DoubleType& dt )
 {
-    double* value = nullptr; 
-    DoubleType( double val ) : value(new double( val )){}
-    ~DoubleType()
-    {
-        delete value;
-    }
-    DoubleType& add( double mod );
-    DoubleType& subtract( double mod );
-    DoubleType& multiply( double mod );
-    DoubleType& divide( double mod );
+    return add(*dt.value);
+}
 
-    DoubleType& add( const FloatType& ft );
-    DoubleType& subtract( const FloatType& ft );
-    DoubleType& multiply( const FloatType& ft );
-    DoubleType& divide( const FloatType& ft );
-};
+FloatType& FloatType::subtract( const DoubleType& dt )
+{
+    return subtract(*dt.value);
+}
+
+FloatType& FloatType::multiply( const DoubleType& dt )
+{
+    return multiply(*dt.value);
+}
+
+FloatType& FloatType::divide( const DoubleType& dt )
+{
+    return divide(*dt.value);
+}
+
+FloatType& FloatType::add( const IntType& it )
+{
+    return add(*it.value);
+}
+
+FloatType& FloatType::subtract( const IntType& it )
+{
+    return subtract(*it.value);
+}
+
+FloatType& FloatType::multiply( const IntType& it )
+{
+    return multiply(*it.value);
+}
+
+FloatType& FloatType::divide( const IntType& it )
+{
+    return divide(*it.value);
+}
+
+//-------------------------------------
 
 DoubleType& DoubleType::add( double mod )
 {
@@ -255,25 +326,6 @@ DoubleType& DoubleType::divide( const FloatType& ft )
 {
     return divide(*ft.value);
 }
-
-struct IntType
-{
-    int* value = nullptr; 
-    IntType(int val) : value(new int( val )){}
-    ~IntType()
-    {
-        delete value;
-    }
-    IntType& add( int mod );
-    IntType& subtract( int mod );
-    IntType& multiply( int mod );
-    IntType& divide( int mod );
-
-    IntType& add( const DoubleType& dt);
-    IntType& subtract( const DoubleType& dt );
-    IntType& multiply( const DoubleType& dt );
-    IntType& divide( const DoubleType& dt);
-};
 
 IntType& IntType::add( int mod )
 {
