@@ -425,7 +425,25 @@ IntType& IntType::divide( int mod )
     return *this;
 }
 
+IntType& IntType::add( const FloatType& ft )
+{
+    return add(*ft.value);
+}
 
+IntType& IntType::subtract( const FloatType& ft )
+{
+    return subtract(*ft.value);
+}
+
+IntType& IntType::multiply( const FloatType& ft )
+{
+    return multiply(*ft.value);
+}
+
+IntType& IntType::divide( const FloatType& ft )
+{
+    return divide(*ft.value);
+}
 
 IntType& IntType::add( const DoubleType& dt )
 {
@@ -447,6 +465,27 @@ IntType& IntType::divide( const DoubleType& dt )
     return divide(*dt.value);
 }
 
+IntType& IntType::add( const IntType& it )
+{
+    return add(*it.value);
+}
+
+IntType& IntType::subtract( const IntType& it )
+{
+    return subtract(*it.value);
+}
+
+IntType& IntType::multiply( const IntType& it )
+{
+    return multiply(*it.value);
+}
+
+IntType& IntType::divide( const IntType& it )
+{
+    return divide(*it.value);
+}
+
+//------------------------------------------
 
 int main()
 {   
