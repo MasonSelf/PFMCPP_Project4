@@ -114,13 +114,9 @@ good to go!
 
 struct FloatType
 {
-    float* value = new float;
-    float placeHolder = 0.f;
-    // FloatType( float val) : value( &val ) {}
-    FloatType( float val )
-    {
-        value = &val;   
-    }
+    float* value = nullptr;
+    FloatType( float val ) : value(new float( val ))
+    { }
     ~FloatType()
     {
         delete value;
@@ -130,17 +126,14 @@ struct FloatType
     FloatType& multiply( float mod );
     FloatType& divide( float mod );
 
-    FloatType add( const FloatType& ft );
+    //FloatType add( const FloatType& ft );
 };
 
 
 FloatType& FloatType::add ( float mod )
 {
     if ( value != nullptr )
-    {
-        placeHolder = *value + mod;
-        value = &placeHolder;
-    }
+        *value += mod;
     return *this;
 }
 
@@ -148,20 +141,15 @@ FloatType& FloatType::add ( float mod )
 FloatType& FloatType::subtract( float mod )
 {
     if ( value != nullptr )
-    {
-        placeHolder = *value - mod;
-        value = &placeHolder;
-    }
+        *value -= mod;
+
     return *this;
 }
 
 FloatType& FloatType::multiply( float mod )
 {
     if (value != nullptr )
-    {
-        placeHolder = *value * mod;
-        value = &placeHolder;
-    }
+        *value *= mod;
     return *this;
 }
 
@@ -170,26 +158,19 @@ FloatType& FloatType::divide( float mod )
     if ( mod == 0.f )
         std::cout << "warning: floating point division by zero!" << std::endl;
     if ( value != nullptr )
-    {
-        placeHolder = *value / mod;
-        value = &placeHolder;
-    }
+        *value /= mod;
     return *this;
 }
 
-FloatType FloatType::add(  const FloatType& ft )
-{
+// FloatType FloatType::add(  const FloatType& ft )
+// {
     
-}
+// }
 
 struct DoubleType
 {
-    double* value = new double;
-    double placeHolder = 0.0;
-    DoubleType( double val ) 
-    {
-        value = &val;
-    }
+    double* value = nullptr; 
+    DoubleType( double val ) : value(new double( val )){}
     ~DoubleType()
     {
         delete value;
@@ -203,30 +184,21 @@ struct DoubleType
 DoubleType& DoubleType::add( double mod )
 {
     if( value != nullptr )
-    {
-        placeHolder = *value + mod;
-        value = &placeHolder;
-    }
+        *value += mod;
     return *this;
 }
 
 DoubleType& DoubleType::subtract( double mod )
 {
     if ( value != nullptr )
-    {
-        placeHolder = *value - mod;
-        value = &placeHolder;
-    }
+        *value -= mod;
     return *this;
 }
 
 DoubleType& DoubleType::multiply( double mod )
 {
     if ( value != nullptr )
-    {
-        placeHolder = *value * mod;
-        value = &placeHolder;
-    }
+        *value *= mod;
     return *this;
 }
 
@@ -235,21 +207,14 @@ DoubleType& DoubleType::divide( double mod )
     if ( mod == 0. )
         std::cout << "warning: floating point division by zero!" << std::endl;
     if ( value != nullptr )
-    {
-        placeHolder = *value / mod;
-        value = &placeHolder;
-    }    
+        *value /= mod;
     return *this;
 }
 
 struct IntType
 {
-    int* value = new int;
-    int placeHolder = 0;
-    IntType(int val)
-    {
-        value = &val;
-    }
+    int* value = nullptr; 
+    IntType(int val) : value(new int( val )){}
     ~IntType()
     {
         delete value;
@@ -263,30 +228,21 @@ struct IntType
 IntType& IntType::add( int mod )
 {
     if ( value != nullptr )
-    {
-        placeHolder = *value + mod;
-        value = &placeHolder;
-    }
+        *value += mod;
     return *this;
 }
 
 IntType& IntType::subtract( int mod )
 {
     if ( value != nullptr )
-    {
-        placeHolder = *value - mod;
-        value = &placeHolder;
-    }
+        *value -= mod;
     return *this;
 }
 
 IntType& IntType::multiply( int mod )
 {
     if ( value != nullptr )
-    {
-        placeHolder = *value * mod;
-        value = &placeHolder;
-    }
+        *value *= mod;
     return *this;
 }
 
@@ -298,10 +254,7 @@ IntType& IntType::divide( int mod )
         return *this;
     }
     if ( value != nullptr )
-    {
-        placeHolder = *value / mod;
-        value = &placeHolder;
-    }
+        *value /= mod;
     return *this;
 }
 
