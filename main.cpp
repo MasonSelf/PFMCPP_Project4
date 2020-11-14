@@ -108,45 +108,63 @@ struct IntType;
 
 struct FloatType
 {
-    float* value = nullptr;
-    FloatType( float val ) : value(new float( val ))
-    { }
-    ~FloatType()
-    {
-        delete value;
-    }
-    FloatType& add( float mod );
-    FloatType& subtract( float mod );
-    FloatType& multiply( float mod );
-    FloatType& divide( float mod );
+    private:
+        float* value = nullptr;
+    public:
+        FloatType( float val ) : value(new float( val ))
+        { }
+        ~FloatType()
+        {
+            delete value;
+        }
+        FloatType& add( float mod );
+        FloatType& subtract( float mod );
+        FloatType& multiply( float mod );
+        FloatType& divide( float mod );
+        operator float() 
+        {
+            return *value;
+        }
 };
 
 struct DoubleType
 {
-    double* value = nullptr; 
-    DoubleType( double val ) : value(new double( val )){}
-    ~DoubleType()
-    {
-        delete value;
-    }
-    DoubleType& add( double mod );
-    DoubleType& subtract( double mod );
-    DoubleType& multiply( double mod );
-    DoubleType& divide( double mod );
+    private:
+        double* value = nullptr; 
+    public:
+        DoubleType( double val ) : value(new double( val )){}
+        ~DoubleType()
+        {
+            delete value;
+        }
+        DoubleType& add( double mod );
+        DoubleType& subtract( double mod );
+        DoubleType& multiply( double mod );
+        DoubleType& divide( double mod );
+        operator double()
+        {
+            return *value;
+        }
 };
 
 struct IntType
 {
-    int* value = nullptr; 
-    IntType(int val) : value(new int( val )){}
-    ~IntType()
-    {
-        delete value;
-    }
-    IntType& add( int mod );
-    IntType& subtract( int mod );
-    IntType& multiply( int mod );
-    IntType& divide( int mod );
+    private:
+        int* value = nullptr; 
+    public:
+        IntType(int val) : value(new int( val )){}
+        ~IntType()
+        {
+            delete value;
+        }
+        IntType& add( int mod );
+        IntType& subtract( int mod );
+        IntType& multiply( int mod );
+        IntType& divide( int mod );
+        operator int()
+        {
+            return *value;
+        }
 };
 
 //-----------------------------------
