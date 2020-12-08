@@ -49,21 +49,6 @@ Project 4: Part 4 / 9
 #include <iostream>
 #include <cmath>
 
-struct Point
-{
-    Point& multiply(float m)
-    {
-        x *= m;
-        y *= m;
-        return *this;
-    }
-private:
-    float x{0}, y{0};
-};
-
-struct FloatType;
-struct DoubleType;
-struct IntType;
 
 void part4()
 {
@@ -525,6 +510,44 @@ IntType& IntType::pow(const IntType& it)
 
 //------------------------------------------
 
+struct Point
+{
+    Point(const FloatType& ft, const FloatType& fTwo) : x(static_cast<float>(ft)), y(static_cast<float>(fTwo)) {}
+    Point(const DoubleType& dt, const DoubleType& dTwo) : x(static_cast<float>(dt)), y(static_cast<float>(dTwo)) {}
+    Point(const IntType& it, const IntType& iTwo) : x(static_cast<float>(it)), y(static_cast<float>(iTwo)) {}
+    
+    Point& multiply(float m);
+    Point& multiply(FloatType& ft);
+    Point& multiply(DoubleType& it);
+    Point& multiply(IntType& it);
+private:
+    float x{0}, y{0};
+};
+
+Point& Point::multiply(float m)
+{
+    x *= m;
+    y *= m;
+    return *this;
+}
+
+Point& Point::multiply(FloatType& ft)
+{
+    return multiply(static_cast<float>(ft));
+}
+
+Point& Point::multiply(DoubleType& dt)
+{
+    return multiply(static_cast<float>(dt));
+}
+
+Point& Point::multiply(IntType& it)
+{
+    return multiply(static_cast<float>(it));
+}
+
+//------------------------------------------
+
 void part3()
 {
     FloatType ft( 5.5f );
@@ -594,6 +617,7 @@ int main()
     std::cout << "---------------------\n" << std::endl; 
 
     part3();
+    part4();
     std::cout << "good to go!\n";
 
     return 0;
