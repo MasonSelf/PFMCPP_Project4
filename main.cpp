@@ -430,9 +430,9 @@ IntType& IntType::pow(const IntType& it)
 
 struct Point
 {
-    Point(const FloatType& ft, const FloatType& fTwo) : x(static_cast<float>(ft)), y(static_cast<float>(fTwo)) {}
-    Point(const DoubleType& dt, const DoubleType& dTwo) : x(static_cast<float>(dt)), y(static_cast<float>(dTwo)) {}
-    Point(const IntType& it, const IntType& iTwo) : x(static_cast<float>(it)), y(static_cast<float>(iTwo)) {}
+    Point(const FloatType& ft, const FloatType& fTwo);
+    Point(const DoubleType& dt, const DoubleType& dTwo);
+    Point(const IntType& it, const IntType& iTwo);
     
     Point& multiply(float m);
     Point& multiply(FloatType& ft);
@@ -443,6 +443,12 @@ struct Point
 private:
     float x{0}, y{0};
 };
+
+Point::Point(const FloatType& ft, const FloatType& fTwo) : x(static_cast<float>(ft)), y(static_cast<float>(fTwo)) {}
+
+Point::Point(const DoubleType& dt, const DoubleType& dTwo) : x(static_cast<float>(dt)), y(static_cast<float>(dTwo)) {}
+
+Point::Point(const IntType& it, const IntType& iTwo) : x(static_cast<float>(it)), y(static_cast<float>(iTwo)) {}
 
 void Point::toString()
 {
