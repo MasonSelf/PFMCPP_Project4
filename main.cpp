@@ -282,7 +282,8 @@ FloatType& FloatType::divide( float mod )
 
 FloatType& FloatType::powInternal(float ft)
 {
-    *value = std::pow( *value, ft );
+    if (value != nullptr)
+        *value = static_cast<float>(std::pow( *value, ft ));
     return *this;
 }
 FloatType& FloatType::pow( float ft )
@@ -339,7 +340,8 @@ DoubleType& DoubleType::divide( double mod )
 
 DoubleType& DoubleType::powInternal(double dt)
 {
-    *value = std::pow( *value, dt );
+    if (value != nullptr)
+        *value = std::pow( *value, dt );
     return *this;
 }
 DoubleType& DoubleType::pow( double dt )
@@ -349,17 +351,17 @@ DoubleType& DoubleType::pow( double dt )
 
 DoubleType& DoubleType::pow(const FloatType& ft)
 {
-    return powInternal(static_cast<float>(ft));
+    return powInternal(static_cast<double>(ft));
 }
 
 DoubleType& DoubleType::pow(const DoubleType& dt)
 {
-    return powInternal(static_cast<float>(dt));
+    return powInternal(static_cast<double>(dt));
 }
 
 DoubleType& DoubleType::pow(const IntType& it)
 {
-    return powInternal(static_cast<float>(it)); 
+    return powInternal(static_cast<double>(it)); 
 }
 
 
@@ -400,27 +402,28 @@ IntType& IntType::divide( int mod )
 
 IntType& IntType::powInternal(int it)
 {
-    *value = std::pow( *value, it );
+    if ( value != nullptr )
+        *value = static_cast<int>(std::pow( *value, it ));
     return *this;
 }
-IntType& IntType::pow( int dt )
+IntType& IntType::pow( int it )
 {
-    return powInternal(dt);
+    return powInternal(it);
 }
 
 IntType& IntType::pow(const FloatType& ft)
 {
-    return powInternal(static_cast<float>(ft));
+    return powInternal(static_cast<int>(ft));
 }
 
 IntType& IntType::pow(const DoubleType& dt)
 {
-    return powInternal(static_cast<float>(dt));
+    return powInternal(static_cast<int>(dt));
 }
 
 IntType& IntType::pow(const IntType& it)
 {
-    return powInternal(static_cast<float>(it)); 
+    return powInternal(static_cast<int>(it)); 
 }
 
 //------------------------------------------
@@ -492,7 +495,7 @@ void part4()
     // ------------------------------------------------------------
     //                          Power tests
     // ------------------------------------------------------------
-    FloatType ft1(2);
+    FloatType ft1(2.f);
     DoubleType dt1(2);
     IntType it1(2);    
     int floatExp = 2.0f;
