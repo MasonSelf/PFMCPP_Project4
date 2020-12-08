@@ -443,7 +443,7 @@ private:
 
 void Point::toString()
 {
-    std::cout << "Point { x: " << x << ", y: " << y << " } " << std::endl;
+    std::cout << "Point { x: " << x << ", y: " << y << " }" << std::endl;
 }
 
 Point& Point::multiply(float m)
