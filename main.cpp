@@ -20,7 +20,7 @@ Project 4: Part 4 / 9
                  pow(const IntType&),
                  pow(const FloatType&),
                  pow(const DoubleType&),
-                 and pow(int)
+                 and pow(int) 
      d) be sure to remember the rules about what member functions can be called on const objects.
              (const objects can only call their const member functions)
      e) the pow() functions should be chainable.
@@ -46,7 +46,7 @@ Project 4: Part 4 / 9
  You will need to use Forward Declaration and out-of-class definitions to complete this.
  */
 
-
+#include <iostream>
 
 struct Point
 {
@@ -59,6 +59,10 @@ struct Point
 private:
     float x{0}, y{0};
 };
+
+struct FloatType;
+struct DoubleType;
+struct IntType;
 
 void part4()
 {
@@ -254,7 +258,6 @@ struct HeapA
     }
 };
 
-#include <iostream>
 
 struct DoubleType;
 struct IntType;
@@ -278,6 +281,12 @@ struct FloatType
         {
             return *value;
         }
+
+        FloatType& pow( const IntType& ) {}
+        FloatType& pow( const FloatType& ) {}
+        FloatType& pow( const DoubleType& ) {}
+
+        //FloatType& powInternal( )
 };
 
 struct DoubleType
@@ -298,6 +307,11 @@ struct DoubleType
         {
             return *value;
         }
+
+        DoubleType& pow( const IntType& ) {}
+        DoubleType& pow( const FloatType& ) {}
+        DoubleType& pow( const DoubleType& ) {}
+
 };
 
 struct IntType
@@ -318,6 +332,10 @@ struct IntType
         {
             return *value;
         }
+
+        IntType& pow( const IntType& ) {}
+        IntType& pow( const FloatType& ) {}
+        IntType& pow( const DoubleType& ) {}
 };
 
 //-----------------------------------
