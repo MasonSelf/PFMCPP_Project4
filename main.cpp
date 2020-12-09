@@ -167,7 +167,7 @@ struct FloatType
 {
     private:
         float* value = nullptr;
-        
+        FloatType& powInternal( float ft );   
     public:
         FloatType( float val ) : value(new float( val ))
         { }
@@ -187,15 +187,14 @@ struct FloatType
         FloatType& pow( float ft );
         FloatType& pow( const IntType& it );
         FloatType& pow( const FloatType& ft );
-        FloatType& pow( const DoubleType& dt );
-
-        FloatType& powInternal( float ft );    
+        FloatType& pow( const DoubleType& dt ); 
 };
 
 struct DoubleType
 {
     private:
         double* value = nullptr; 
+        DoubleType& powInternal( double dt );
     public:
         DoubleType( double val ) : value(new double( val )){}
         ~DoubleType()
@@ -215,14 +214,13 @@ struct DoubleType
         DoubleType& pow( const IntType& it );
         DoubleType& pow( const FloatType& ft );
         DoubleType& pow( const DoubleType& dt );
-
-        DoubleType& powInternal( double dt );
 };
 
 struct IntType
 {
     private:
         int* value = nullptr; 
+        IntType& powInternal( int it );
     public:
         IntType(int val) : value(new int( val )){}
         ~IntType()
@@ -242,8 +240,6 @@ struct IntType
         IntType& pow( const IntType& it );
         IntType& pow( const FloatType& ft );
         IntType& pow( const DoubleType& dt );
-
-        IntType& powInternal( int it );
 };
 
 //-----------------------------------
