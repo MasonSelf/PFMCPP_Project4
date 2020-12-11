@@ -27,29 +27,29 @@ Do not delete your previous main.
  5) delete the example below after it makes sense how your code will change due to 1).
  */
 
-namespace Example
-{
-    int main()
-    {
-        FloatType floatNum(4.3f);
-        IntType intNum(2);
-        IntType intNum2(6);
+// namespace Example
+// {
+//     int main()
+//     {
+//         FloatType floatNum(4.3f);
+//         IntType intNum(2);
+//         IntType intNum2(6);
 
-        /* 
-        if you previously had a line like this demonstrating chaining:
+//         /* 
+//         if you previously had a line like this demonstrating chaining:
             
-            intNum.add(3).add(4.5f).divide(floatNum); 
+//             intNum.add(3).add(4.5f).divide(floatNum); 
 
-        it should become:
-        */
-        intNum += 3;
-        intNum += 4.5f;
-        intNum /= floatNum;
-        std::cout << "intNum: " << intNum << std::endl;
+//         it should become:
+//         */
+//         intNum += 3;
+//         intNum += 4.5f;
+//         intNum /= floatNum;
+//         std::cout << "intNum: " << intNum << std::endl;
         
-        return 0;
-    }
-}
+//         return 0;
+//     }
+// }
 
  /*
  6) compile/link/run to make sure you don't have any errors or warnings.
@@ -171,6 +171,8 @@ struct HeapA
 };
 
 
+#include<cmath>
+
 struct DoubleType;
 struct IntType;
 
@@ -186,10 +188,10 @@ struct FloatType
         {
             delete value;
         }
-        FloatType& add( float mod );
-        FloatType& subtract( float mod );
-        FloatType& multiply( float mod );
-        FloatType& divide( float mod );
+        FloatType& operator+=( float mod );
+        FloatType& operator-=( float mod );
+        FloatType& operator*=( float mod );
+        FloatType& operator/=( float mod );
         operator float() const
         {
             return *value;
@@ -212,10 +214,10 @@ struct DoubleType
         {
             delete value;
         }
-        DoubleType& add( double mod );
-        DoubleType& subtract( double mod );
-        DoubleType& multiply( double mod );
-        DoubleType& divide( double mod );
+        DoubleType& operator+=( double mod );
+        DoubleType& operator-=( double mod );
+        DoubleType& operator*=( double mod );
+        DoubleType& operator/=( double mod );
         operator double() const
         {
             return *value;
@@ -238,10 +240,10 @@ struct IntType
         {
             delete value;
         }
-        IntType& add( int mod );
-        IntType& subtract( int mod );
-        IntType& multiply( int mod );
-        IntType& divide( int mod );
+        IntType& operator+=( int mod );
+        IntType& operator-=( int mod );
+        IntType& operator*=( int mod );
+        IntType& operator/=( int mod );
         operator int() const
         {
             return *value;
@@ -255,7 +257,7 @@ struct IntType
 
 //-----------------------------------
 
-FloatType& FloatType::add ( float mod )
+FloatType& FloatType::operator+= ( float mod )
 {
     if ( value != nullptr )
         *value += mod;
@@ -263,7 +265,7 @@ FloatType& FloatType::add ( float mod )
 }
 
 
-FloatType& FloatType::subtract( float mod )
+FloatType& FloatType::operator-=( float mod )
 {
     if ( value != nullptr )
         *value -= mod;
@@ -271,14 +273,14 @@ FloatType& FloatType::subtract( float mod )
     return *this;
 }
 
-FloatType& FloatType::multiply( float mod )
+FloatType& FloatType::operator*=( float mod )
 {
     if (value != nullptr )
         *value *= mod;
     return *this;
 }
 
-FloatType& FloatType::divide( float mod )
+FloatType& FloatType::operator/=( float mod )
 {
     if ( mod == 0.f )
         std::cout << "warning: floating point division by zero!" << std::endl;
@@ -315,28 +317,28 @@ FloatType& FloatType::pow(const IntType& it)
 
 //-------------------------------------
 
-DoubleType& DoubleType::add( double mod )
+DoubleType& DoubleType::operator+=( double mod )
 {
     if( value != nullptr )
         *value += mod;
     return *this;
 }
 
-DoubleType& DoubleType::subtract( double mod )
+DoubleType& DoubleType::operator-=( double mod )
 {
     if ( value != nullptr )
         *value -= mod;
     return *this;
 }
 
-DoubleType& DoubleType::multiply( double mod )
+DoubleType& DoubleType::operator*=( double mod )
 {
     if ( value != nullptr )
         *value *= mod;
     return *this;
 }
 
-DoubleType& DoubleType::divide( double mod ) 
+DoubleType& DoubleType::operator/=( double mod ) 
 {
     if ( mod == 0. )
         std::cout << "warning: floating point division by zero!" << std::endl;
@@ -374,28 +376,28 @@ DoubleType& DoubleType::pow(const IntType& it)
 
 //-----------------------------------
 
-IntType& IntType::add( int mod )
+IntType& IntType::operator+=( int mod )
 {
     if ( value != nullptr )
         *value += mod;
     return *this;
 }
 
-IntType& IntType::subtract( int mod )
+IntType& IntType::operator-=( int mod )
 {
     if ( value != nullptr )
         *value -= mod;
     return *this;
 }
 
-IntType& IntType::multiply( int mod )
+IntType& IntType::operator*=( int mod )
 {
     if ( value != nullptr )
         *value *= mod;
     return *this;
 }
 
-IntType& IntType::divide( int mod )
+IntType& IntType::operator/=( int mod )
 {
     if ( mod == 0 )
     {
@@ -493,8 +495,13 @@ void part3()
     IntType it ( 34 );
     DoubleType pi( 3.14 );
 
-    std::cout << "The result of FloatType^3 divided by IntType is: " << ft.multiply( ft ).multiply( ft ).divide( static_cast<float>(it) ) << std::endl;
-    std::cout << "The result of DoubleType times 3 plus IntType is : " << dt.multiply( 3 ).add( it ) << std::endl;
+    //replace ft.multiply( ft ).multiply( ft ).divide( static_cast<float>(it) )
+    ft *= ft *= ft /= static_cast<float>(it);
+
+    std::cout << "The result of FloatType^3 divided by IntType is: " << ft << std::endl;
+
+    
+    std::cout << "The result of DoubleType times 3 plus IntType is : " << dt << std::endl;
     std::cout << "The result of IntType divided by 3.14 multiplied by DoubleType minus FloatType is: " << it.divide( static_cast<int>(pi) ).multiply( static_cast<int>(dt) ).subtract( static_cast<int>(ft) ) << std::endl;
     std::cout << "An operation followed by attempts to divide by 0, which are ignored and warns user: " << std::endl;
     std::cout << it.multiply(it).divide(0).divide(0.0f).divide(0.0) << std::endl;
