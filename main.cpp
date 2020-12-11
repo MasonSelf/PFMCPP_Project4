@@ -690,14 +690,20 @@ int main()
     // --------
     std::cout << "Intercept division by 0 " << std::endl;
 
+    std::cout << "New value of it = it / 0 = ";
+
     it /= 0;
-    std::cout << "New value of it = it / 0 = " << it << std::endl;
+    std::cout << it << std::endl;
 
-    ft /= 0.f;
-    std::cout << "New value of ft = ft / 0 = " << ft << std::endl;
+    std::cout << "New value of ft = ft / 0 = ";
 
-    dt /= 0.0;
-    std::cout << "New value of dt = dt / 0 = " << dt << std::endl;
+    ft/= 0.f;
+    std::cout << ft << std::endl;
+
+    std::cout << "New value of dt = dt / 0 = ";
+
+    dt/= 0.0;
+    std::cout << dt << std::endl;
 
     std::cout << "---------------------\n" << std::endl; 
 
