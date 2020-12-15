@@ -520,6 +520,12 @@ IntType& IntType::apply( void( *f )( int& ) )
     }
     return *this;
 }
+
+void myIntFreeFunct ( int& value )
+{
+    value += 5;
+}
+
 //------------------------------------------
 
 struct Point
@@ -731,13 +737,17 @@ void part6()
 
     std::cout << "Calling IntType::apply() using a lambda (adds 5) and IntType as return type:" << std::endl;
     std::cout << "it3 before: " << it3 << std::endl;
-    /*it3.apply( [](){} );
+    it3.apply( [ &it3 ] ( int& val ) -> IntType&
+    {
+        val += 5;
+        return it3;
+    } );
     std::cout << "it3 after: " << it3 << std::endl;
     std::cout << "Calling IntType::apply() using a free function (adds 5) and void as return type:" << std::endl;
     std::cout << "it3 before: " << it3 << std::endl;
     it3.apply(myIntFreeFunct);
     std::cout << "it3 after: " << it3 << std::endl;
-    std::cout << "---------------------\n" << std::endl;    */
+    std::cout << "---------------------\n" << std::endl;    
 }
 
 int main()
