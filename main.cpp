@@ -243,15 +243,8 @@ struct DoubleType
         DoubleType& pow( const FloatType& ft );
         DoubleType& pow( const DoubleType& dt );
 
-        DoubleType& apply( std::function<DoubleType&( std::unique_ptr<double>& )> f )
-        {
-            return *this;
-        }
-
-        DoubleType& apply( void( *f )( std::unique_ptr<double>& ) )
-        {
-            return *this;
-        }
+        DoubleType& apply( std::function<DoubleType&( double& )> f );
+        DoubleType& apply( void( *f )( double& ) );
 };
 
 struct IntType
@@ -414,6 +407,24 @@ DoubleType& DoubleType::pow(const DoubleType& dt)
 DoubleType& DoubleType::pow(const IntType& it)
 {
     return powInternal(static_cast<double>(it)); 
+}
+
+DoubleType& DoubleType::apply( std::function<DoubleType&( double& )> f )
+{
+    if ( f )
+    {
+        return f(*value);
+    }
+    return *this;
+}
+        
+DoubleType& DoubleType::apply( void( *f )( double& ) )
+{
+    if ( f )
+    {
+        f(*value);
+    }
+    return *this;
 }
 
 
