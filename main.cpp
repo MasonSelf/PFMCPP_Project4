@@ -271,6 +271,9 @@ struct IntType
         IntType& pow( const IntType& it );
         IntType& pow( const FloatType& ft );
         IntType& pow( const DoubleType& dt );
+
+        IntType& apply( std::function<IntType&( int& )> f );
+        IntType& apply( void( *f )( int& ) );
 };
 
 //-----------------------------------
@@ -489,6 +492,24 @@ IntType& IntType::pow(const IntType& it)
     return powInternal(static_cast<int>(it)); 
 }
 
+
+IntType& IntType::apply( std::function<IntType&( int& )> f )
+{
+    if ( f )
+    {
+        return f(*value);
+    }
+    return *this;
+}
+        
+IntType& IntType::apply( void( *f )( int& ) )
+{
+    if ( f )
+    {
+        f(*value);
+    }
+    return *this;
+}
 //------------------------------------------
 
 struct Point
