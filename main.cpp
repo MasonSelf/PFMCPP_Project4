@@ -436,6 +436,10 @@ DoubleType& DoubleType::apply( void( *f )( double& ) )
     return *this;
 }
 
+void myDoubleFreeFunct( double& value )
+{
+    value += 6.0;
+}
 
 //-----------------------------------
 
@@ -713,7 +717,11 @@ void part6()
 
     std::cout << "Calling DoubleType::apply() using a lambda (adds 6.0) and DoubleType as return type:" << std::endl;
     std::cout << "dt3 before: " << dt3 << std::endl;
-    /*dt3.apply( [](){} );
+    dt3.apply( [&dt3] (double& val )  -> DoubleType&
+    {
+        val += 6.0;
+        return dt3;
+    } );
     std::cout << "dt3 after: " << dt3 << std::endl;
     std::cout << "Calling DoubleType::apply() using a free function (adds 6.0) and void as return type:" << std::endl;
     std::cout << "dt3 before: " << dt3 << std::endl;
@@ -723,7 +731,7 @@ void part6()
 
     std::cout << "Calling IntType::apply() using a lambda (adds 5) and IntType as return type:" << std::endl;
     std::cout << "it3 before: " << it3 << std::endl;
-    it3.apply( [](){} );
+    /*it3.apply( [](){} );
     std::cout << "it3 after: " << it3 << std::endl;
     std::cout << "Calling IntType::apply() using a free function (adds 5) and void as return type:" << std::endl;
     std::cout << "it3 before: " << it3 << std::endl;
