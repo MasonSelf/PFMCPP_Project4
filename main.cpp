@@ -264,11 +264,32 @@ struct Numeric
                 *value *= mod;
             return *this;
         }
-
-        Numeric& operator/=( Type mod )
+        template<typename DivType>
+        Numeric& operator/=( DivType mod )
         {
-            if ( mod == 0.f )
+            if constexpr (std::is_same<Type, int>::value)
+            {
+                if constexpr (std::is_same<DivType, int>::value)
+                {
+                    if ( mod == 0 )
+                    {
+                        std::cout << "error: integer division by zero is an error and will crash the program!" << std::endl;
+                        return *this;
+                    }
+                }
+
+                else if constexpr ( mod <  std::numeric_limits<DivType>::epsilon())
+                {
+                    std::cout << "can't divide integers by zero!" << std::endl;
+                    return *this;
+                }   
+            }
+
+            else if constexpr ( mod <  std::numeric_limits<Type>::epsilon())
+            {
                 std::cout << "warning: floating point division by zero!" << std::endl;
+            }  
+
             if ( value != nullptr )
                 *value /= mod;
             return *this;
