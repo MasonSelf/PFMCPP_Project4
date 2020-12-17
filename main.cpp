@@ -278,14 +278,14 @@ struct Numeric
                     }
                 }
 
-                else if constexpr ( mod <  std::numeric_limits<DivType>::epsilon())
+                else if ( mod <  std::numeric_limits<DivType>::epsilon())
                 {
                     std::cout << "can't divide integers by zero!" << std::endl;
                     return *this;
                 }   
             }
 
-            else if constexpr ( mod <  std::numeric_limits<Type>::epsilon())
+            else if ( mod <  std::numeric_limits<Type>::epsilon())
             {
                 std::cout << "warning: floating point division by zero!" << std::endl;
             }  
@@ -359,7 +359,7 @@ struct Numeric<double>
 
         Numeric& operator/=( Type mod )
         {
-            if ( mod == 0.f )
+            if ( mod == 0 )
                 std::cout << "warning: floating point division by zero!" << std::endl;
             if ( value != nullptr )
                 *value /= mod;
@@ -368,7 +368,7 @@ struct Numeric<double>
 
         Numeric& pow(const Type& ft)
         {
-            return powInternal(static_cast<float>(ft));
+            return powInternal( ft );
         }
 
         template<typename Callable>
@@ -382,7 +382,7 @@ struct Numeric<double>
 template<typename NumericType>
 void myNumericFreeFunct( std::unique_ptr<NumericType>& value )
 {
-    *value += 7.f;
+    *value += 7;
 }
 
 void myFloatFreeFunct( float& value )
@@ -399,337 +399,6 @@ void myIntFreeFunct ( int& value )
 {
     value += 5;
 }
-
-// struct DoubleType;
-// struct IntType;
-
-// struct FloatType
-// {
-//     private:
-//         std::unique_ptr<float> value;
-//         FloatType& powInternal( float ft );   
-//     public:
-//         FloatType( float val ) : value( std::make_unique<float> (val)) {}
-        
-//         FloatType& operator+=( float mod );
-//         FloatType& operator-=( float mod );
-//         FloatType& operator*=( float mod );
-//         FloatType& operator/=( float mod );
-//         operator float() const
-//         {
-//             return *value;
-//         }
-
-//         FloatType& pow( float ft );
-//         FloatType& pow( const IntType& it );
-//         FloatType& pow( const FloatType& ft );
-//         FloatType& pow( const DoubleType& dt ); 
-        
-//         FloatType& apply( std::function<FloatType&( float& )> f );
-//         FloatType& apply( void( *f )( float& ) );
-
-// };
-
-// struct DoubleType
-// {
-//     private:
-//         std::unique_ptr<double> value; 
-//         DoubleType& powInternal( double dt );
-//     public:
-//         DoubleType( double val ) : value(std::make_unique<double> (val)) {}
-
-//         DoubleType& operator+=( double mod );
-//         DoubleType& operator-=( double mod );
-//         DoubleType& operator*=( double mod );
-//         DoubleType& operator/=( double mod );
-//         operator double() const
-//         {
-//             return *value;
-//         }
-
-//         DoubleType& pow( double dt );
-//         DoubleType& pow( const IntType& it );
-//         DoubleType& pow( const FloatType& ft );
-//         DoubleType& pow( const DoubleType& dt );
-
-//         DoubleType& apply( std::function<DoubleType&( double& )> f );
-//         DoubleType& apply( void( *f )( double& ) );
-// };
-
-// struct IntType
-// {
-//     private:
-//         std::unique_ptr<int> value; 
-//         IntType& powInternal( int it );
-//     public:
-//         IntType(int val) : value(std::make_unique<int> (val) {}
-
-//         IntType& operator+=( int mod );
-//         IntType& operator-=( int mod );
-//         IntType& operator*=( int mod );
-//         IntType& operator/=( int mod );
-//         operator int() const
-//         {
-//             return *value;
-//         }
-
-//         IntType& pow( int it );
-//         IntType& pow( const IntType& it );
-//         IntType& pow( const FloatType& ft );
-//         IntType& pow( const DoubleType& dt );
-
-//         IntType& apply( std::function<IntType&( int& )> f );
-//         IntType& apply( void( *f )( int& ) );
-// };
-
-// //-----------------------------------
-
-// FloatType& FloatType::operator+= ( float mod )
-// {
-//     if ( value != nullptr )
-//         *value += mod;
-//     return *this;
-// }
-
-
-// FloatType& FloatType::operator-=( float mod )
-// {
-//     if ( value != nullptr )
-//         *value -= mod;
-
-//     return *this;
-// }
-
-// FloatType& FloatType::operator*=( float mod )
-// {
-//     if (value != nullptr )
-//         *value *= mod;
-//     return *this;
-// }
-
-// FloatType& FloatType::operator/=( float mod )
-// {
-//     if ( mod == 0.f )
-//         std::cout << "warning: floating point division by zero!" << std::endl;
-//     if ( value != nullptr )
-//         *value /= mod;
-//     return *this;
-// }
-
-// FloatType& FloatType::powInternal(float ft)
-// {
-//     if (value != nullptr)
-//         *value = static_cast<float>(std::pow( *value, ft ));
-//     return *this;
-// }
-// FloatType& FloatType::pow( float ft )
-// {
-//     return powInternal(ft);
-// }
-
-// FloatType& FloatType::pow(const FloatType& ft)
-// {
-//     return powInternal(static_cast<float>(ft));
-// }
-
-// FloatType& FloatType::pow(const DoubleType& dt)
-// {
-//     return powInternal(static_cast<float>(dt));
-// }
-
-// FloatType& FloatType::pow(const IntType& it)
-// {
-//     return powInternal(static_cast<float>(it)); 
-// }
-
-// FloatType& FloatType::apply( std::function<FloatType&( float& )> f )
-// {
-//     if ( f )
-//     {
-//         return f(*value);
-//     }
-//     return *this;
-// }
-        
-// FloatType& FloatType::apply( void( *f )( float& ) )
-// {
-//     if ( f )
-//     {
-//         f(*value);
-//     }
-//     return *this;
-// }
-
-// // void myFloatFreeFunct( float& value )
-// // {
-// //     value += 7.f;
-// // }
-
-// //-------------------------------------
-
-// DoubleType& DoubleType::operator+=( double mod )
-// {
-//     if( value != nullptr )
-//         *value += mod;
-//     return *this;
-// }
-
-// DoubleType& DoubleType::operator-=( double mod )
-// {
-//     if ( value != nullptr )
-//         *value -= mod;
-//     return *this;
-// }
-
-// DoubleType& DoubleType::operator*=( double mod )
-// {
-//     if ( value != nullptr )
-//         *value *= mod;
-//     return *this;
-// }
-
-// DoubleType& DoubleType::operator/=( double mod ) 
-// {
-//     if ( mod == 0. )
-//         std::cout << "warning: floating point division by zero!" << std::endl;
-//     if ( value != nullptr )
-//         *value /= mod;
-//     return *this;
-// }
-
-// DoubleType& DoubleType::powInternal(double dt)
-// {
-//     if (value != nullptr)
-//         *value = std::pow( *value, dt );
-//     return *this;
-// }
-// DoubleType& DoubleType::pow( double dt )
-// {
-//     return powInternal(dt);
-// }
-
-// DoubleType& DoubleType::pow(const FloatType& ft)
-// {
-//     return powInternal(static_cast<double>(ft));
-// }
-
-// DoubleType& DoubleType::pow(const DoubleType& dt)
-// {
-//     return powInternal(static_cast<double>(dt));
-// }
-
-// DoubleType& DoubleType::pow(const IntType& it)
-// {
-//     return powInternal(static_cast<double>(it)); 
-// }
-
-// DoubleType& DoubleType::apply( std::function<DoubleType&( double& )> f )
-// {
-//     if ( f )
-//     {
-//         return f(*value);
-//     }
-//     return *this;
-// }
-        
-// DoubleType& DoubleType::apply( void( *f )( double& ) )
-// {
-//     if ( f )
-//     {
-//         f(*value);
-//     }
-//     return *this;
-// }
-
-// // void myDoubleFreeFunct( double& value )
-// // {
-// //     value += 6.0;
-// // }
-
-// //-----------------------------------
-
-// IntType& IntType::operator+=( int mod )
-// {
-//     if ( value != nullptr )
-//         *value += mod;
-//     return *this;
-// }
-
-// IntType& IntType::operator-=( int mod )
-// {
-//     if ( value != nullptr )
-//         *value -= mod;
-//     return *this;
-// }
-
-// IntType& IntType::operator*=( int mod )
-// {
-//     if ( value != nullptr )
-//         *value *= mod;
-//     return *this;
-// }
-
-// IntType& IntType::operator/=( int mod )
-// {
-//     if ( mod == 0 )
-//     {
-//         std::cout << "error: integer division by zero is an error and will crash the program!" << std::endl;
-//         return *this;
-//     }
-//     if ( value != nullptr )
-//         *value /= mod;
-//     return *this;
-// }
-
-// IntType& IntType::powInternal(int it)
-// {
-//     if ( value != nullptr )
-//         *value = static_cast<int>(std::pow( *value, it ));
-//     return *this;
-// }
-// IntType& IntType::pow( int it )
-// {
-//     return powInternal(it);
-// }
-
-// IntType& IntType::pow(const FloatType& ft)
-// {
-//     return powInternal(static_cast<int>(ft));
-// }
-
-// IntType& IntType::pow(const DoubleType& dt)
-// {
-//     return powInternal(static_cast<int>(dt));
-// }
-
-// IntType& IntType::pow(const IntType& it)
-// {
-//     return powInternal(static_cast<int>(it)); 
-// }
-
-
-// IntType& IntType::apply( std::function<IntType&( int& )> f )
-// {
-//     if ( f )
-//     {
-//         return f(*value);
-//     }
-//     return *this;
-// }
-        
-// IntType& IntType::apply( void( *f )( int& ) )
-// {
-//     if ( f )
-//     {
-//         f(*value);
-//     }
-//     return *this;
-// }
-
-// // void myIntFreeFunct ( int& value )
-// // {
-// //     value += 5;
-// // }
 
 // //------------------------------------------
 
@@ -823,14 +492,14 @@ void part4()
     std::cout << "pow(ft1, floatExp) = " << ft1 << "^" << floatExp << " = " << ft1.pow(floatExp)  << std::endl;
     std::cout << "pow(ft1, itExp) = " << ft1 << "^" << itExp << " = " << ft1.pow(itExp)  << std::endl;
     std::cout << "pow(ft1, ftExp) = " << ft1 << "^" << ftExp << " = " << ft1.pow(ftExp)  << std::endl;    
-    std::cout << "pow(ft1, dtExp) = " << ft1 << "^" << dtExp << " = " << ft1.pow(dtExp)  << std::endl;    
+    std::cout << "pow(ft1, dtExp) = " << ft1 << "^" << dtExp << " = " << ft1.pow(static_cast<float>(dtExp))  << std::endl;    
     std::cout << "---------------------\n" << std::endl;  
 
     // Power tests with DoubleType
     std::cout << "Power tests with DoubleType " << std::endl;
     std::cout << "pow(dt1, doubleExp) = " << dt1 << "^" << doubleExp << " = " << dt1.pow(intExp)  << std::endl;
     std::cout << "pow(dt1, itExp) = " << dt1 << "^" << itExp << " = " << dt1.pow(itExp)  << std::endl;
-    std::cout << "pow(dt1, ftExp) = " << dt1 << "^" << ftExp << " = " << dt1.pow(ftExp)  << std::endl;    
+    std::cout << "pow(dt1, ftExp) = " << dt1 << "^" << ftExp << " = " << dt1.pow(static_cast<double>(ftExp))  << std::endl;    
     std::cout << "pow(dt1, dtExp) = " << dt1 << "^" << dtExp << " = " << dt1.pow(dtExp)  << std::endl;    
     std::cout << "---------------------\n" << std::endl;    
 
@@ -838,8 +507,8 @@ void part4()
     std::cout << "Power tests with IntType " << std::endl;
     std::cout << "pow(it1, intExp) = " << it1 << "^" << intExp << " = " << it1.pow(intExp)  << std::endl;
     std::cout << "pow(it1, itExp) = " << it1 << "^" << itExp << " = " << it1.pow(itExp)  << std::endl;
-    std::cout << "pow(it1, ftExp) = " << it1 << "^" << ftExp << " = " << it1.pow(ftExp)  << std::endl;    
-    std::cout << "pow(it1, dtExp) = " << it1 << "^" << dtExp << " = " << it1.pow(dtExp)  << std::endl;    
+    std::cout << "pow(it1, ftExp) = " << it1 << "^" << ftExp << " = " << it1.pow(static_cast<int>(ftExp))  << std::endl;    
+    std::cout << "pow(it1, dtExp) = " << it1 << "^" << dtExp << " = " << it1.pow(static_cast<int>(dtExp))  << std::endl;    
     std::cout << "===============================\n" << std::endl; 
 
     // ------------------------------------------------------------
@@ -1120,3 +789,4 @@ int main()
 
  Wait for my code review. 
  */
+
