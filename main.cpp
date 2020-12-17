@@ -230,28 +230,93 @@ struct Numeric
     using Type = NumType;
     private:
         std::unique_ptr<float> value;
-        Numeric& powInternal( float ft );   
+        Numeric& powInternal(Type ft)
+        {
+            if (value != nullptr)
+                *value = static_cast<float>(std::pow( *value, ft ));
+            return *this;
+        }
     public:
-        Numeric( Type val ) : value( std::make_unqiue<Type>(val) {}
+        Numeric( Type val ) : value( std::make_unique<Type>(val)) {}
         
-        Numeric& operator+=( Type mod );
-        Numeric& operator-=( Type mod );
-        Numeric& operator*=( Type mod );
-        Numeric& operator/=( Type mod );
+        //Numeric& operator+=( Type mod );
+        //Numeric& operator-=( Type mod );
+        //Numeric& operator*=( Type mod );
+        //Numeric& operator/=( Type mod );
         operator Type() const
         {
             return *value;
         }
 
-        Numeric& pow( Type ft );
-        Numeric& pow( const Type& it );
+        //Numeric& pow( Type ft );
+        //Numeric& pow( const Type& it );
         //Numeric& pow( const Type& ft );
         //Numeric& pow( const Type& dt ); 
         
-        Numeric& apply( std::function<Type&( Type& )> f );
-        Numeric& apply( void( *f )( Type& ) );
+        //Numeric& apply( std::function<Type&( Type& )> f );
+        //Numeric& apply( void( *f )( Type& ) );
+
+        Numeric& operator+= ( Type mod )
+        {
+        if ( value != nullptr )
+            *value += mod;
+        return *this;
+        }
+
+        Numeric& operator-=( Type mod )
+        {
+            if ( value != nullptr )
+                *value -= mod;
+            return *this;
+        }
+
+        Numeric& operator*=( Type mod )
+        {
+            if (value != nullptr )
+                *value *= mod;
+            return *this;
+        }
+
+        Numeric& operator/=( Type mod )
+        {
+            if ( mod == 0.f )
+                std::cout << "warning: floating point division by zero!" << std::endl;
+            if ( value != nullptr )
+                *value /= mod;
+            return *this;
+        }
+
+// FloatType& FloatType::pow( float ft )
+// {
+//     return powInternal(ft);
+// }
+
+        Numeric& pow(const Type& ft)
+        {
+            return powInternal(static_cast<float>(ft));
+        }
+
+        Numeric& apply( std::function<Type&( Type& )> f )
+        {
+            if ( f )
+                return f(*value);
+            return *this;
+        }
+        
+        Numeric& apply( void( *f )( Type& ) )
+        {
+            if ( f )
+                f(*value);
+            return *this;
+        }
 
 };
+
+template<typename Type>
+void myNumericFreeFunct( std::unique_ptr<Type>& value )
+{
+    value += 7.f;
+}
 
 struct DoubleType;
 struct IntType;
@@ -818,7 +883,7 @@ void part7()
     std::cout << "ft3 before: " << ft3 << std::endl;
 
     {
-        using Type = #4;
+        using Type = decltype(ft3);
         ft3.apply( [](std::unique...){} );
     }
 
@@ -833,7 +898,7 @@ void part7()
     std::cout << "dt3 before: " << dt3 << std::endl;
 
     {
-        using Type = #4;
+        using Type = decltype(dt3);
         dt3.apply( [](std::unique...){} ); // This calls the templated apply fcn
     }
     
@@ -848,7 +913,7 @@ void part7()
     std::cout << "it3 before: " << it3 << std::endl;
 
     {
-        using Type = #4;
+        using Type = decltype(it3);
         it3.apply( [](std::unique...){} );
     }
     std::cout << "it3 after: " << it3 << std::endl;
