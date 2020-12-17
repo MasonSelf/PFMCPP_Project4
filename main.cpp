@@ -79,56 +79,6 @@ Templates and Containers
 If you need to view an example, see: https://bitbucket.org/MatkatMusic/pfmcpptasks/src/master/Projects/Project4/Part7Example.cpp
 */
 
-void part7()
-{
-    Numeric ft3(3.0f);
-    Numeric dt3(4.0);
-    Numeric it3(5);
-    
-    std::cout << "Calling Numeric<float>::apply() using a lambda (adds 7.0f) and Numeric<float> as return type:" << std::endl;
-    std::cout << "ft3 before: " << ft3 << std::endl;
-
-    {
-        using Type = #4;
-        ft3.apply( [](std::unique...){} );
-    }
-
-    std::cout << "ft3 after: " << ft3 << std::endl;
-    std::cout << "Calling Numeric<float>::apply() twice using a free function (adds 7.0f) and void as return type:" << std::endl;
-    std::cout << "ft3 before: " << ft3 << std::endl;
-    ft3.apply(myNumericFreeFunct).apply(myNumericFreeFunct);
-    std::cout << "ft3 after: " << ft3 << std::endl;
-    std::cout << "---------------------\n" << std::endl;
-
-    std::cout << "Calling Numeric<double>::apply() using a lambda (adds 6.0) and Numeric<double> as return type:" << std::endl;
-    std::cout << "dt3 before: " << dt3 << std::endl;
-
-    {
-        using Type = #4;
-        dt3.apply( [](std::unique...){} ); // This calls the templated apply fcn
-    }
-    
-    std::cout << "dt3 after: " << dt3 << std::endl;
-    std::cout << "Calling Numeric<double>::apply() twice using a free function (adds 7.0) and void as return type:" << std::endl;
-    std::cout << "dt3 before: " << dt3 << std::endl;
-    dt3.apply(myNumericFreeFunct<double>).apply(myNumericFreeFunct<double>); // This calls the templated apply fcn
-    std::cout << "dt3 after: " << dt3 << std::endl;
-    std::cout << "---------------------\n" << std::endl;
-
-    std::cout << "Calling Numeric<int>::apply() using a lambda (adds 5) and Numeric<int> as return type:" << std::endl;
-    std::cout << "it3 before: " << it3 << std::endl;
-
-    {
-        using Type = #4;
-        it3.apply( [](std::unique...){} );
-    }
-    std::cout << "it3 after: " << it3 << std::endl;
-    std::cout << "Calling Numeric<int>::apply() twice using a free function (adds 7) and void as return type:" << std::endl;
-    std::cout << "it3 before: " << it3 << std::endl;
-    it3.apply(myNumericFreeFunct).apply(myNumericFreeFunct);
-    std::cout << "it3 after: " << it3 << std::endl;
-    std::cout << "---------------------\n" << std::endl;    
-}
 
 /*
 your program should generate the following output EXACTLY.
@@ -272,6 +222,37 @@ struct HeapA
 #include<functional>
 #include<memory>
 
+//---------------------------------------   2
+
+template <typename NumType>
+struct Numeric
+{
+    using Type = NumType;
+    private:
+        std::unique_ptr<float> value;
+        Numeric& powInternal( float ft );   
+    public:
+        Numeric( Type val ) : value( std::make_unqiue<Type>(val) {}
+        
+        Numeric& operator+=( Type mod );
+        Numeric& operator-=( Type mod );
+        Numeric& operator*=( Type mod );
+        Numeric& operator/=( Type mod );
+        operator Type() const
+        {
+            return *value;
+        }
+
+        Numeric& pow( Type ft );
+        Numeric& pow( const Type& it );
+        //Numeric& pow( const Type& ft );
+        //Numeric& pow( const Type& dt ); 
+        
+        Numeric& apply( std::function<Type&( Type& )> f );
+        Numeric& apply( void( *f )( Type& ) );
+
+};
+
 struct DoubleType;
 struct IntType;
 
@@ -281,7 +262,7 @@ struct FloatType
         std::unique_ptr<float> value;
         FloatType& powInternal( float ft );   
     public:
-        FloatType( float val ) : value( std::make_unqiue<float> val) {}
+        FloatType( float val ) : value( std::make_unique<float> (val)) {}
         
         FloatType& operator+=( float mod );
         FloatType& operator-=( float mod );
@@ -308,7 +289,7 @@ struct DoubleType
         std::unique_ptr<double> value; 
         DoubleType& powInternal( double dt );
     public:
-        DoubleType( double val ) : value(std::make_unique<double> val) {}
+        DoubleType( double val ) : value(std::make_unique<double> (val)) {}
 
         DoubleType& operator+=( double mod );
         DoubleType& operator-=( double mod );
@@ -334,11 +315,8 @@ struct IntType
         std::unique_ptr<int> value; 
         IntType& powInternal( int it );
     public:
-        IntType(int val) : value(std::make_unique<int> val) {}
-        ~IntType()
-        {
-            delete value;
-        }
+        IntType(int val) : value(std::make_unique<int> (val) {}
+
         IntType& operator+=( int mod );
         IntType& operator-=( int mod );
         IntType& operator*=( int mod );
@@ -435,10 +413,10 @@ FloatType& FloatType::apply( void( *f )( float& ) )
     return *this;
 }
 
-void myFloatFreeFunct( float& value )
-{
-    value += 7.f;
-}
+// void myFloatFreeFunct( float& value )
+// {
+//     value += 7.f;
+// }
 
 //-------------------------------------
 
@@ -516,10 +494,10 @@ DoubleType& DoubleType::apply( void( *f )( double& ) )
     return *this;
 }
 
-void myDoubleFreeFunct( double& value )
-{
-    value += 6.0;
-}
+// void myDoubleFreeFunct( double& value )
+// {
+//     value += 6.0;
+// }
 
 //-----------------------------------
 
@@ -601,10 +579,10 @@ IntType& IntType::apply( void( *f )( int& ) )
     return *this;
 }
 
-void myIntFreeFunct ( int& value )
-{
-    value += 5;
-}
+// void myIntFreeFunct ( int& value )
+// {
+//     value += 5;
+// }
 
 //------------------------------------------
 
@@ -830,6 +808,57 @@ void part4()
 //     std::cout << "---------------------\n" << std::endl;    
 // }
 
+void part7()
+{
+    Numeric ft3(3.0f);
+    Numeric dt3(4.0);
+    Numeric it3(5);
+    
+    std::cout << "Calling Numeric<float>::apply() using a lambda (adds 7.0f) and Numeric<float> as return type:" << std::endl;
+    std::cout << "ft3 before: " << ft3 << std::endl;
+
+    {
+        using Type = #4;
+        ft3.apply( [](std::unique...){} );
+    }
+
+    std::cout << "ft3 after: " << ft3 << std::endl;
+    std::cout << "Calling Numeric<float>::apply() twice using a free function (adds 7.0f) and void as return type:" << std::endl;
+    std::cout << "ft3 before: " << ft3 << std::endl;
+    ft3.apply(myNumericFreeFunct).apply(myNumericFreeFunct);
+    std::cout << "ft3 after: " << ft3 << std::endl;
+    std::cout << "---------------------\n" << std::endl;
+
+    std::cout << "Calling Numeric<double>::apply() using a lambda (adds 6.0) and Numeric<double> as return type:" << std::endl;
+    std::cout << "dt3 before: " << dt3 << std::endl;
+
+    {
+        using Type = #4;
+        dt3.apply( [](std::unique...){} ); // This calls the templated apply fcn
+    }
+    
+    std::cout << "dt3 after: " << dt3 << std::endl;
+    std::cout << "Calling Numeric<double>::apply() twice using a free function (adds 7.0) and void as return type:" << std::endl;
+    std::cout << "dt3 before: " << dt3 << std::endl;
+    dt3.apply(myNumericFreeFunct<double>).apply(myNumericFreeFunct<double>); // This calls the templated apply fcn
+    std::cout << "dt3 after: " << dt3 << std::endl;
+    std::cout << "---------------------\n" << std::endl;
+
+    std::cout << "Calling Numeric<int>::apply() using a lambda (adds 5) and Numeric<int> as return type:" << std::endl;
+    std::cout << "it3 before: " << it3 << std::endl;
+
+    {
+        using Type = #4;
+        it3.apply( [](std::unique...){} );
+    }
+    std::cout << "it3 after: " << it3 << std::endl;
+    std::cout << "Calling Numeric<int>::apply() twice using a free function (adds 7) and void as return type:" << std::endl;
+    std::cout << "it3 before: " << it3 << std::endl;
+    it3.apply(myNumericFreeFunct).apply(myNumericFreeFunct);
+    std::cout << "it3 after: " << it3 << std::endl;
+    std::cout << "---------------------\n" << std::endl;    
+}
+
 int main()
 {   
     //testing instruction 0
@@ -930,6 +959,7 @@ int main()
     part3();
     part4();
     //part6();
+    part7();
     std::cout << "good to go!\n";
 
     return 0;
