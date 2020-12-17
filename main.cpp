@@ -721,52 +721,33 @@ void myNumericFreeFunct( std::unique_ptr<Type>& value )
 
 struct Point
 {
-    Point(const FloatType& ft, const FloatType& fTwo);
-    Point(const DoubleType& dt, const DoubleType& dTwo);
-    Point(const IntType& it, const IntType& iTwo);
-    
-    Point& multiply(float m);
-    Point& multiply(FloatType& ft);
-    Point& multiply(DoubleType& it);
-    Point& multiply(IntType& it);
+    template<typename NumericType1, typename NumericType2>
+    Point(const NumericType1& one, const NumericType2& two) : x(static_cast<float>(one)), y(static_cast<float>(two)) {}
 
-    void toString();
+    
+    Point& multiply(float m)
+    {
+        x *= m;
+        y *= m;
+        return *this;
+    }
+
+    template<typename NumericType>
+    Point& multiply(NumericType& m)
+    {
+        return multiply(static_cast<float>(m));
+    }
+
+    void toString()
+    {
+        std::cout << "Point { x: " << x << ", y: " << y << " }" << std::endl;
+    }
 private:
     float x{0}, y{0};
 };
 
-Point::Point(const FloatType& ft, const FloatType& fTwo) : x(static_cast<float>(ft)), y(static_cast<float>(fTwo)) {}
 
-Point::Point(const DoubleType& dt, const DoubleType& dTwo) : x(static_cast<float>(dt)), y(static_cast<float>(dTwo)) {}
 
-Point::Point(const IntType& it, const IntType& iTwo) : x(static_cast<float>(it)), y(static_cast<float>(iTwo)) {}
-
-void Point::toString()
-{
-    std::cout << "Point { x: " << x << ", y: " << y << " }" << std::endl;
-}
-
-Point& Point::multiply(float m)
-{
-    x *= m;
-    y *= m;
-    return *this;
-}
-
-Point& Point::multiply(FloatType& ft)
-{
-    return multiply(static_cast<float>(ft));
-}
-
-Point& Point::multiply(DoubleType& dt)
-{
-    return multiply(static_cast<float>(dt));
-}
-
-Point& Point::multiply(IntType& it)
-{
-    return multiply(static_cast<float>(it));
-}
 
 //------------------------------------------
 
