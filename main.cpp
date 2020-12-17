@@ -297,7 +297,7 @@ struct Numeric
 
         Numeric& pow(const Type& ft)
         {
-            return powInternal(static_cast<float>(ft));
+            return powInternal(ft);
         }
 
         Numeric& apply( std::function<Numeric&( std::unique_ptr<Type>& )> f )
@@ -359,7 +359,7 @@ struct Numeric<double>
 
         Numeric& operator/=( Type mod )
         {
-            if ( mod == 0 )
+            if ( mod == 0.0 )
                 std::cout << "warning: floating point division by zero!" << std::endl;
             if ( value != nullptr )
                 *value /= mod;
@@ -458,8 +458,8 @@ void part3()
 
     it *= it;
     it /= 0;
-    it /= static_cast<int>(0.f);
-    it /= static_cast<int>(0.f);
+    it /= 0.f;
+    it /= 0.0;
     std::cout << it << std::endl;
     
     it *= static_cast<int>(ft);
