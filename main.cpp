@@ -224,10 +224,10 @@ struct HeapA
 
 //---------------------------------------   2
 
-template <typename NumType>
+template <typename NumericType>
 struct Numeric
 {
-    using Type = NumType;
+    using Type = NumericType;
     private:
         std::unique_ptr<Type> value;
         Numeric& powInternal(Type ft)
@@ -300,17 +300,17 @@ struct Numeric
             return powInternal(static_cast<float>(ft));
         }
 
-        Numeric& apply( std::function<Type&( Type& )> f )
+        Numeric& apply( std::function<Numeric&( std::unique_ptr<Type>& )> f )
         {
             if ( f )
-                return f(*value);
+                return f(value);
             return *this;
         }
         
-        Numeric& apply( void( *f )( Type& ) )
+        Numeric& apply( void( *f )( std::unique_ptr<Type>& ) )
         {
             if ( f )
-                f(*value);
+                f(value);
             return *this;
         }
 
@@ -372,18 +372,32 @@ struct Numeric<double>
         }
 
         template<typename Callable>
-        Numeric& apply( Callable& f )
+        Numeric& apply( Callable f )
         {
-            if ( f )
-                return f(*value);
+            f(value);
             return *this;
         }     
 };
 
-template<typename Type>
-void myNumericFreeFunct( std::unique_ptr<Type>& value )
+template<typename NumericType>
+void myNumericFreeFunct( std::unique_ptr<NumericType>& value )
+{
+    *value += 7.f;
+}
+
+void myFloatFreeFunct( float& value )
 {
     value += 7.f;
+}
+
+void myDoubleFreeFunct( double& value )
+{
+    value += 6.0;
+}
+
+void myIntFreeFunct ( int& value )
+{
+    value += 5;
 }
 
 // struct DoubleType;
@@ -924,18 +938,18 @@ void part4()
 
 void part7()
 {
-    Numeric ft3(3.0f);
-    Numeric dt3(4.0);
-    Numeric it3(5);
+    Numeric<float> ft3(3.0f);
+    Numeric<double> dt3(4.0);
+    Numeric<int> it3(5);
     
     std::cout << "Calling Numeric<float>::apply() using a lambda (adds 7.0f) and Numeric<float> as return type:" << std::endl;
     std::cout << "ft3 before: " << ft3 << std::endl;
 
     {
-        using Type = decltype(ft3);
+        using NumericType = decltype(ft3);
         ft3.apply( [&ft3](std::unique_ptr<NumericType::Type>& val)-> NumericType&
         {
-            val += 7.f;
+            *val += 7.f;
             return ft3;
         } );
     }
@@ -951,10 +965,10 @@ void part7()
     std::cout << "dt3 before: " << dt3 << std::endl;
 
     {
-        using Type = decltype(dt3);
+        using NumericType = decltype(dt3);
         dt3.apply( [&dt3](std::unique_ptr<NumericType::Type>& val)-> NumericType&
         {
-            val += 6.0;
+            *val += 6.0;
             return dt3;
         } ); // This calls the templated apply fcn
     }
@@ -970,10 +984,10 @@ void part7()
     std::cout << "it3 before: " << it3 << std::endl;
 
     {
-        using Type = decltype(it3);
+        using NumericType = decltype(it3);
         it3.apply( [&it3](std::unique_ptr<NumericType::Type>& val)-> NumericType&
         {
-            val += 5;
+            *val += 5;
             return it3;
         } );
     }
@@ -991,9 +1005,9 @@ int main()
     HeapA heapA; 
 
     //assign heap primitives
-    FloatType ft ( 2.0f );  
-    DoubleType dt ( 2 );
-    IntType it ( 2 ) ;
+    Numeric<float> ft ( 2.0f );  
+    Numeric<double> dt ( 2 );
+    Numeric<int> it ( 2 ) ;
     
     ft+= 2.f;
     std::cout << "FloatType add result=" << ft << std::endl;
