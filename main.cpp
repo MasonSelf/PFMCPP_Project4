@@ -931,7 +931,11 @@ void part7()
 
     {
         using Type = decltype(ft3);
-        ft3.apply( [](std::unique...){} );
+        ft3.apply( [&ft3](std::unique_ptr<NumericType::Type>& val)-> NumericType&
+        {
+            val += 7.f;
+            return ft3;
+        } );
     }
 
     std::cout << "ft3 after: " << ft3 << std::endl;
@@ -946,7 +950,11 @@ void part7()
 
     {
         using Type = decltype(dt3);
-        dt3.apply( [](std::unique...){} ); // This calls the templated apply fcn
+        dt3.apply( [&dt3](std::unique_ptr<NumericType::Type>& val)-> NumericType&
+        {
+            val += 6.0;
+            return dt3;
+        } ); // This calls the templated apply fcn
     }
     
     std::cout << "dt3 after: " << dt3 << std::endl;
@@ -961,7 +969,11 @@ void part7()
 
     {
         using Type = decltype(it3);
-        it3.apply( [](std::unique...){} );
+        it3.apply( [&it3](std::unique_ptr<NumericType::Type>& val)-> NumericType&
+        {
+            val += 5;
+            return it3;
+        } );
     }
     std::cout << "it3 after: " << it3 << std::endl;
     std::cout << "Calling Numeric<int>::apply() twice using a free function (adds 7) and void as return type:" << std::endl;
