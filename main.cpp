@@ -278,14 +278,14 @@ struct Numeric
                     }
                 }
 
-                else if ( mod <  std::numeric_limits<DivType>::epsilon())
+                else if ( std::abs(mod) <  std::numeric_limits<DivType>::epsilon())
                 {
                     std::cout << "can't divide integers by zero!" << std::endl;
                     return *this;
                 }   
             }
 
-            else if ( mod <  std::numeric_limits<DivType>::epsilon())
+            else if ( std::abs(mod) <  std::numeric_limits<DivType>::epsilon())
             {
                 std::cout << "warning: floating point division by zero!" << std::endl;
             }  
