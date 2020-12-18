@@ -246,9 +246,9 @@ struct Numeric
 
         Numeric& operator+= ( Type mod )
         {
-        if ( value != nullptr )
-            *value += mod;
-        return *this;
+            if ( value != nullptr )
+                *value += mod;
+            return *this;
         }
 
         Numeric& operator-=( Type mod )
@@ -285,7 +285,7 @@ struct Numeric
                 }   
             }
 
-            else if ( mod <  std::numeric_limits<Type>::epsilon())
+            else if ( mod <  std::numeric_limits<DivType>::epsilon())
             {
                 std::cout << "warning: floating point division by zero!" << std::endl;
             }  
@@ -338,9 +338,9 @@ struct Numeric<double>
 
         Numeric& operator+= ( Type mod )
         {
-        if ( value != nullptr )
-            *value += mod;
-        return *this;
+            if ( value != nullptr )
+                *value += mod;
+            return *this;
         }
 
         Numeric& operator-=( Type mod )
