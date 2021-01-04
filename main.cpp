@@ -150,7 +150,7 @@ struct HeapA
 template <typename NumericType>
 struct Numeric
 {
-    using Type = NumericType;
+    using Type = Temporary<NumericType>;
     private:
         std::unique_ptr<Type> value;
     public:
@@ -161,6 +161,17 @@ struct Numeric
             return *value;
         }
 
+        operator NumericType() const{ return *value; }
+
+        operator NumericType&() { return *value; }
+
+        template<typename OtherType>
+        Numeric& operator= (const OtherType& mod )
+        {
+            if (value != nullptr)
+                *value = static_cast<NumericType>(mod);
+            return *this;
+        }
         template<typename OtherType>
         Numeric& operator+= ( const OtherType& mod )
         {
@@ -224,7 +235,7 @@ struct Numeric
         }
 
         template<typename Callable>
-        Numeric& apply( Callable f )
+        Numeric& apply( Callable&& f )
         {
             f(value);
             return *this;
