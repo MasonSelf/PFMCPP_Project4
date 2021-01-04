@@ -244,7 +244,7 @@ void cube( std::unique_ptr<NumericType>& value)
     if (value != nullptr)
     {
         NumericType& i = *value;
-        i = std::pow(i, 3.0);
+        i = i * i * i;
     }
 }
 // void myFloatFreeFunct( float& value )
