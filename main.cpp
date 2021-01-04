@@ -130,8 +130,6 @@ i cubed: 531441
 Use a service like https://www.diffchecker.com/diff to compare your output. 
 */
 
-
-
 struct A {};
 struct HeapA
 {
@@ -141,9 +139,6 @@ struct HeapA
         delete ownedA;
     }
 };
-
-
-
 
 //---------------------------------------   2
 
@@ -162,7 +157,6 @@ struct Numeric
         }
 
         operator NumericType() const{ return *value; }
-
         operator NumericType&() { return *value; }
 
         template<typename OtherType>
@@ -172,6 +166,7 @@ struct Numeric
                 *value = static_cast<NumericType>(mod);
             return *this;
         }
+
         template<typename OtherType>
         Numeric& operator+= ( const OtherType& mod )
         {
@@ -195,6 +190,7 @@ struct Numeric
                 *value *= static_cast<NumericType>(mod);
             return *this;
         }
+
         template<typename OtherType>
         Numeric& operator/= ( const OtherType& mod )
         {
@@ -301,9 +297,6 @@ struct Point
 private:
     float x{0}, y{0};
 };
-
-
-
 
 // //------------------------------------------
 
@@ -621,8 +614,6 @@ int main()
         std::cout << "i cubed: " << i << std::endl;
     }
 }
-
-
 
 /*
  MAKE SURE YOU ARE NOT ON THE MASTER BRANCH
