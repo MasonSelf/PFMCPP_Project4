@@ -75,6 +75,7 @@ Use a service like https://www.diffchecker.com/diff to compare your output.
 #include<iostream>
 #include<functional>
 #include<memory>
+#include"LeakedObjectDetector.h"
 
 template<typename NumericType>
 struct Temporary
@@ -90,6 +91,8 @@ struct Temporary
 private:
     static int counter;
     NumericType v;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Temporary)
 };
 
 
@@ -204,6 +207,8 @@ struct Numeric
 
 private:
     std::unique_ptr<Type> value;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Numeric)
 };
 
 template<typename NumericType>
