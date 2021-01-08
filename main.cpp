@@ -112,96 +112,98 @@ template <typename NumericType>
 struct Numeric
 {
     using Type = Temporary<NumericType>;
-    private:
-        std::unique_ptr<Type> value;
-    public:
-        Numeric( Type val ) : value( std::make_unique<Type>(val)) {}
+    
+
+    Numeric( Type val ) : value( std::make_unique<Type>(val)) {}
         
-        operator Type() const
-        {
-            return *value;
-        }
+    operator Type() const
+    {
+        return *value;
+    }
 
-        operator NumericType() const{ return *value; }
-        operator NumericType&() { return *value; }
+    operator NumericType() const{ return *value; }
+    operator NumericType&() { return *value; }
 
-        template<typename OtherType>
-        Numeric& operator= (const OtherType& mod )
-        {
-            if (value != nullptr)
-                *value = static_cast<NumericType>(mod);
-            return *this;
-        }
+    template<typename OtherType>
+    Numeric& operator= (const OtherType& mod )
+    {
+        if (value != nullptr)
+            *value = static_cast<NumericType>(mod);
+        return *this;
+    }
 
-        template<typename OtherType>
-        Numeric& operator+= ( const OtherType& mod )
-        {
-            if ( value != nullptr )
-                *value += static_cast<NumericType>(mod);
-            return *this;
-        }
+    template<typename OtherType>
+    Numeric& operator+= ( const OtherType& mod )
+    {
+        if ( value != nullptr )
+            *value += static_cast<NumericType>(mod);
+        return *this;
+    }
 
-        template<typename OtherType>
-        Numeric& operator-= ( const OtherType& mod )
-        {
-            if ( value != nullptr )
-                *value -= static_cast<NumericType>(mod);
-            return *this;
-        }
+    template<typename OtherType>
+    Numeric& operator-= ( const OtherType& mod )
+    {
+        if ( value != nullptr )
+            *value -= static_cast<NumericType>(mod);
+        return *this;
+    }
 
-        template<typename OtherType>
-        Numeric& operator*= ( const OtherType& mod )
-        {
-            if (value != nullptr )
-                *value *= static_cast<NumericType>(mod);
-            return *this;
-        }
+    template<typename OtherType>
+    Numeric& operator*= ( const OtherType& mod )
+    {
+        if (value != nullptr )
+            *value *= static_cast<NumericType>(mod);
+        return *this;
+    }
 
-        template<typename OtherType>
-        Numeric& operator/= ( const OtherType& mod )
+    template<typename OtherType>
+    Numeric& operator/= ( const OtherType& mod )
+    {
+        if constexpr (std::is_same<Type, int>::value)
         {
-            if constexpr (std::is_same<Type, int>::value)
+            if constexpr (std::is_same<OtherType, int>::value)
             {
-                if constexpr (std::is_same<OtherType, int>::value)
+                if ( mod == 0 )
                 {
-                    if ( mod == 0 )
-                    {
-                        std::cout << "error: integer division by zero is an error and will crash the program!" << std::endl;
-                        return *this;
-                    }
-                }
-
-                else if ( std::abs(mod) <  std::numeric_limits<OtherType>::epsilon())
-                {
-                    std::cout << "can't divide integers by zero!" << std::endl;
+                    std::cout << "error: integer division by zero is an error and will crash the program!" << std::endl;
                     return *this;
-                }   
+                }
             }
 
             else if ( std::abs(mod) <  std::numeric_limits<OtherType>::epsilon())
             {
-                std::cout << "warning: floating point division by zero!" << std::endl;
-            }  
-
-            if ( value != nullptr )
-                *value /=  static_cast<NumericType>(mod);
-            return *this;
+                std::cout << "can't divide integers by zero!" << std::endl;
+                return *this;
+            }   
         }
 
-        template<typename OtherType>
-        Numeric& pow(const OtherType& mod)
+        else if ( std::abs(mod) <  std::numeric_limits<OtherType>::epsilon())
         {
-            if (value != nullptr)
-                *value = static_cast<Type>(std::pow( *value, static_cast<NumericType>(mod)));
-            return *this;
-        }
+            std::cout << "warning: floating point division by zero!" << std::endl;
+        }  
 
-        template<typename Callable>
-        Numeric& apply( Callable&& f )
-        {
-            f(value);
-            return *this;
-        }    
+        if ( value != nullptr )
+            *value /=  static_cast<NumericType>(mod);
+        return *this;
+    }
+
+    template<typename OtherType>
+    Numeric& pow(const OtherType& mod)
+    {
+        if (value != nullptr)
+            *value = static_cast<Type>(std::pow( *value, static_cast<NumericType>(mod)));
+        return *this;
+    }
+
+    template<typename Callable>
+    Numeric& apply( Callable&& f )
+    {
+        f(value);
+        return *this;
+    }    
+
+private:
+    std::unique_ptr<Type> value;
 };
 
 template<typename NumericType>
