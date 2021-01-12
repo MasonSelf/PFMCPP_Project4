@@ -13,13 +13,13 @@ Create a branch named Part9
  2) move these macros after the JUCE_LEAK_DETECTOR macro :
  */
 
-#define JUCE_DECLARE_NON_COPYABLE(className) \
-            className (const className&) = delete;\
-            className& operator= (const className&) = delete;
+// #define JUCE_DECLARE_NON_COPYABLE(className) \
+//             className (const className&) = delete;\
+//             className& operator= (const className&) = delete;
 
-#define JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(className) \
-            JUCE_DECLARE_NON_COPYABLE(className) \
-            JUCE_LEAK_DETECTOR(className)
+// #define JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(className) \
+//             JUCE_DECLARE_NON_COPYABLE(className) \
+//             JUCE_LEAK_DETECTOR(className)
 
 /*
  3) add JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Temporary) to the end of the  Temporary<> struct
@@ -85,7 +85,17 @@ struct Temporary
         std::cout << "I'm a Temporary<" << typeid(v).name() << "> object, #"
                   << counter++ << std::endl;
     }
+
+    ~Temporary() = default;
+
+    Temporary(Temporary&& other) : v( std::move(other.v)) {}
     
+    Temporary& operator=(Temporary&& other)
+    {
+        v = std::move(other.v);
+        return *this;
+    }
+
     operator NumericType() const { return v; }
     operator NumericType&() { return v; }
 private:
@@ -99,15 +109,6 @@ private:
 template <typename NumericType>
 int Temporary<NumericType>::counter {0};
 
-struct A {};
-struct HeapA
-{
-    A* ownedA = new A;
-    ~HeapA()
-    {
-        delete ownedA;
-    }
-};
 
 //---------------------------------------   2
 
@@ -116,14 +117,19 @@ struct Numeric
 {
     using Type = Temporary<NumericType>;
     
-
     Numeric( Type val ) : value( std::make_unique<Type>(val)) {}
         
-    operator Type() const
+    ~Numeric() = default;
+
+    Numeric(Numeric&& other) { value =std::move(other.val); } 
+    
+    Numeric& operator=(Numeric&& other)
     {
-        return *value;
+        value = std::move(other.v);
+        return *this;
     }
 
+    operator Type() const { return *value; }
     operator NumericType() const{ return *value; }
     operator NumericType&() { return *value; }
 
@@ -367,4 +373,5 @@ int main()
 
  Wait for my code review. 
  */
+
 
